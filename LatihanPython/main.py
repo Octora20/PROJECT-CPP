@@ -33,12 +33,12 @@ def main():
     st.header('Menu Minuman')
     minuman_jumlah = {}
     for minuman, harga in daftar_minuman.items():
-        minuman_jumlah[minuman] = st.number_input(f' jumlah {minuman} (Rp{harga})', min_value=0, step=1)
+        minuman_jumlah[minuman] = st.number_input(f'{minuman} (Rp{harga})', min_value=0, step=1)
 
     st.header('Menu Makanan')
     makanan_jumlah = {}
     for makanan, harga in daftar_makanan.items():
-        makanan_jumlah[makanan] = st.number_input(f' jumlah {makanan} (Rp{harga})', min_value=0, step=1)
+        makanan_jumlah[makanan] = st.number_input(f'{makanan} (Rp{harga})', min_value=0, step=1)
 
     st.header('Ringkasan Pesanan')
     for minuman, jumlah in minuman_jumlah.items():
