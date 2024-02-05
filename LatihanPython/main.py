@@ -24,6 +24,10 @@ def page_two():
         luas = 0.5 * alas * tinggi 
         st.success(f"Luas segitiganya adalah {luas}")
 
+    # Tombol untuk kembali ke page one
+    if st.button("Kembali ke Menu Utama"):
+        st.session_state.page = "welcome"
+
 def page_three():
     st.write ("""
     # Aplikasi Luas Persegi
@@ -37,6 +41,9 @@ def page_three():
         luas = sisi * sisi
         st.success(f"Luas persegi adalah {luas}")
 
+    # Tombol untuk kembali ke page one
+    if st.button("Kembali ke Menu Utama"):
+        st.session_state.page = "welcome"
 
 # Inisialisasi session state
 if 'page' not in st.session_state:
