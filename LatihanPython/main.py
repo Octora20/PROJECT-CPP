@@ -2,20 +2,20 @@ import streamlit as st
 
 # Daftar menu minuman dan harganya
 daftar_minuman = {
-    'Espresso': 20000,
-    'Cappuccino': 25000,
-    'Latte': 25000,
-    'Americano': 22000,
-    'Macchiato': 23000
+    'Espresso': 15000,
+    'Cappuccino': 20000,
+    'Latte': 20000,
+    'Americano': 25000,
+    'Macchiato': 25000
 }
 
 # Daftar menu makanan dan harganya
 daftar_makanan = {
-    'Nasi Goreng': 35000,
-    'Mie Goreng': 30000,
-    'Nasi Rawon': 40000,
+    'Nasi Goreng': 20000,
+    'Mie Goreng': 15000,
+    'Nasi Rawon': 25000,
     'Sate Ayam': 25000,
-    'Bakso': 20000
+    'Bakso': 15000
 }
 
 # Fungsi untuk menghitung total biaya pembelian
