@@ -7,6 +7,8 @@ def page_one():
     """)
     if st.button("Luas Segitiga"):
         st.session_state.page = "luas_segitiga"
+    if st.button("Luas Persegi"):
+        st.session_state.page = "luas_persegi"
 
 def page_two():
     st.write ("""
@@ -22,6 +24,18 @@ def page_two():
         luas = 0.5 * alas * tinggi 
         st.success(f"Luas segitiganya adalah {luas}")
 
+def page_three():
+    st.write ("""
+    # Aplikasi Luas Persegi
+    Ini adalah aplikasi menghitung luas persegi sederhana
+    """)
+
+    sisi = st.number_input("Masukkan Panjang Sisi", 0)
+    hitung = st.button("Hitung Luas")
+
+    if hitung:
+        luas = sisi * sisi
+        st.success(f"Luas persegi adalah {luas}")
 
 
 # Inisialisasi session state
@@ -33,7 +47,9 @@ if st.session_state.page == "welcome":
     page_one()
 elif st.session_state.page == "luas_segitiga":
     page_two()
-    
+elif st.session_state.page == "luas_persegi":
+    page_three()
+
 st.write("")
 st.write("")
 st.write("")
