@@ -1,29 +1,65 @@
 import streamlit as st
 import pandas as pd
+import re
+
+def validate_time_format(time_string):
+    """Validasi format waktu dengan format 'HH.MM-HH.MM'."""
+    pattern = r'^\d{1,2}\.\d{2}-\d{1,2}\.\d{2}$'
+    if re.match(pattern, time_string):
+        return True
+    return False
 
 def main():
     st.title("Rundown Acara")
 
-    # Tambahkan input untuk menambahkan item rundown dan jam
-    item = st.text_input("Tambahkan item rundown:")
-    time = st.text_input("Tambahkan waktu (jam:menit):")
+    # Load data dari file CSV (jika ada)
+    try:
+        data = pd.read_csv("data_rundown.csv")
+    except FileNotFoundError:
+        data = pd.DataFrame(columns=["No", "Agenda", "Jam"])
+
+    # Tampilkan tabel rundown acara
+    st.write("Rundown Acara Saat Ini:")
+    st.write(data)
+
+    st.write("Tambahkan Item Rundown Baru:")
+    no = st.text_input("No")
+    agenda = st.text_input("Agenda")
+    jam = st.text_input("Jam (format: HH.MM-HH.MM)")
+
     if st.button("Tambahkan"):
-        if "rundown" not in st.session_state:
-            st.session_state.rundown = []
-            st.session_state.times = []
-        st.session_state.rundown.append(item)
-        st.session_state.times.append(time)
+        if no.strip() and agenda.strip() and jam.strip() and validate_time_format(jam.strip()):
+            data.loc[len(data)] = [no, agenda, jam]
+            data.to_csv("data_rundown.csv", index=False)
+            st.success("Item Rundown Berhasil Ditambahkan!")
+        else:
+            st.error("Mohon isi semua kolom input dengan benar.")
 
-    # Tampilkan rundown
-    if "rundown" in st.session_state:
-        st.write("Rundown Acara:")
-        df = pd.DataFrame({"Waktu": st.session_state.times, "Item Rundown": st.session_state.rundown})
-        st.write(df)
+    # Pilihan untuk mengedit rundown
+    st.write("Edit Item Rundown:")
+    rundown_to_edit = st.selectbox("Pilih Item Rundown yang Ingin Diedit:", data["Agenda"])
+    selected_row = data[data["Agenda"] == rundown_to_edit]
+    new_no = st.text_input("No", value=selected_row["No"].iloc[0])
+    new_agenda = st.text_input("Agenda", value=selected_row["Agenda"].iloc[0])
+    new_jam = st.text_input("Jam", value=selected_row["Jam"].iloc[0])
 
-        # Simpan ke dalam file CSV
-        if st.button("Simpan ke CSV"):
-            df.to_csv("rundown_acara.csv", index=False)
-            st.success("Data berhasil disimpan ke dalam file CSV")
+    if st.button("Edit"):
+        if validate_time_format(new_jam.strip()):
+            data.loc[data["Agenda"] == rundown_to_edit, "No"] = new_no
+            data.loc[data["Agenda"] == rundown_to_edit, "Agenda"] = new_agenda
+            data.loc[data["Agenda"] == rundown_to_edit, "Jam"] = new_jam
+            data.to_csv("data_rundown.csv", index=False)
+            st.success("Item Rundown Berhasil Diedit!")
+        else:
+            st.error("Format waktu yang dimasukkan tidak valid.")
 
-if __name__ == "_main_":
+    # Pilihan untuk menghapus rundown
+    st.write("Hapus Item Rundown:")
+    rundown_to_delete = st.selectbox("Pilih Item Rundown yang Ingin Dihapus:", data["Agenda"])
+    if st.button("Hapus"):
+        data = data[data["Agenda"] != rundown_to_delete]
+        data.to_csv("data_rundown.csv", index=False)
+        st.success("Item Rundown Berhasil Dihapus!")
+
+if __name__ == "__main__":
     main()
